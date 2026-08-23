@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emre Güzel — Bilgisayar Mühendisi</title>
+<title>Emre Güzel - Bilgisayar Mühendisi</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
@@ -77,6 +77,25 @@
     font-size:12px;
     color:var(--graphite);
     margin-bottom:36px;
+  }
+  .language-switcher{
+    display:flex;
+    gap:4px;
+    margin-bottom:28px;
+  }
+  .language-switcher button{
+    font-family:var(--mono);
+    font-size:10px;
+    padding:5px 8px;
+    border:1px solid var(--line);
+    background:none;
+    color:var(--graphite);
+    cursor:pointer;
+  }
+  .language-switcher button.active{
+    border-color:var(--ink);
+    color:var(--ink);
+    font-weight:500;
   }
 
   nav.rail{
@@ -308,6 +327,7 @@
     .sidebar nav.rail, .side-footer{ display:none; }
     .monogram{ margin-bottom:0; }
     .side-name, .side-title{ display:none; }
+    .language-switcher{ margin:0 0 0 auto; }
     .mobile-nav{
       display:flex; gap:4px; overflow-x:auto;
     }
@@ -330,14 +350,19 @@
   <aside class="sidebar">
     <div class="monogram"><img src="resim.jpg" alt="Emre Güzel"></div>
     <div class="side-name">Emre Güzel</div>
-    <div class="side-title">Bilgisayar Mühendisi</div>
+    <div class="side-title" data-i18n="sideTitle">Bilgisayar Mühendisi</div>
+
+    <div class="language-switcher" aria-label="Language selector">
+      <button type="button" class="active" data-language="tr">TR</button>
+      <button type="button" data-language="en">EN</button>
+    </div>
 
     <nav class="rail" id="rail">
-      <div class="rail-item active" data-page="home"><span class="idx">01</span>Ana Sayfa</div>
-      <div class="rail-item" data-page="about"><span class="idx">02</span>Hakkımda</div>
-      <div class="rail-item" data-page="experience"><span class="idx">03</span>Deneyim</div>
-      <div class="rail-item" data-page="projects"><span class="idx">04</span>Projeler &amp; Yetenekler</div>
-      <div class="rail-item" data-page="contact"><span class="idx">05</span>İletişim</div>
+      <div class="rail-item active" data-page="home"><span class="idx">01</span><span data-i18n="home">Ana Sayfa</span></div>
+      <div class="rail-item" data-page="about"><span class="idx">02</span><span data-i18n="about">Hakkımda</span></div>
+      <div class="rail-item" data-page="experience"><span class="idx">03</span><span data-i18n="experience">Deneyim</span></div>
+      <div class="rail-item" data-page="projects"><span class="idx">04</span><span data-i18n="projects">Projeler &amp; Yetenekler</span></div>
+      <div class="rail-item" data-page="contact"><span class="idx">05</span><span data-i18n="contact">İletişim</span></div>
     </nav>
 
     <div class="side-footer">Ankara, Türkiye</div>
@@ -608,6 +633,103 @@
 </div>
 
 <script>
+  const translations = {
+    'Bilgisayar Mühendisi': 'Computer Engineer',
+    'Ana Sayfa': 'Home',
+    'Hakkımda': 'About',
+    'Deneyim': 'Experience',
+    'Projeler & Yetenekler': 'Projects & Skills',
+    'Projeler': 'Projects',
+    'İletişim': 'Contact',
+    'Portfolyo': 'Portfolio',
+    'Merhaba, ben Emre.': 'Hello, I am Emre.',
+    'Ağ altyapısından yapay zekâ destekli uygulamalara kadar geniş bir yelpazede pratik deneyim edindim; temiz kod ve okunabilir sistemler kurmaya önem veriyorum.': 'I have practical experience across a wide range, from network infrastructure to AI-powered applications. I care about building clean code and readable systems.',
+    'Konum': 'Location',
+    'Odak': 'Focus',
+    'Yazılım Geliştirme & Yapay Zekâ': 'Software Development & AI',
+    'Eğitim': 'Education',
+    'Bilgisayar Mühendisliği, THK Üniversitesi': 'Computer Engineering, THK University',
+    'Diller': 'Languages',
+    'Türkçe (Anadil), İngilizce (B2)': 'Turkish (Native), English (B2)',
+    'Projelerimi Gör': 'View My Projects',
+    'İletişime Geç': 'Get in Touch',
+    'Analitik düşünen, pratik üreten bir mühendis adayı.': 'An analytical engineering student who turns ideas into practical solutions.',
+    'Türk Hava Kurumu Üniversitesi Bilgisayar Mühendisliği bölümünde eğitimimi sürdürüyorum. Problemlere analitik yaklaşmayı ve yeni kavramları hızla kavrayıp uygulamaya dökmeyi seviyorum. Takım çalışmasına yatkın, uyum sağlayan ve sonuç odaklı bir çalışma tarzım var; edindiğim teknik bilgiyi gerçek dünya problemlerinde kullanmaya motiveyim.': 'I am studying Computer Engineering at Turkish Aeronautical Association University. I enjoy approaching problems analytically, quickly understanding new concepts, and turning them into working solutions. I am collaborative, adaptable, and results-oriented, and I am motivated to apply my technical knowledge to real-world problems.',
+    'Bilgisayar Mühendisliği Lisans Programı': 'Bachelor\'s Degree in Computer Engineering',
+    'Türk Hava Kurumu Üniversitesi — Ankara, Türkiye': 'Turkish Aeronautical Association University - Ankara, Türkiye',
+    'Programlama, veri yapıları ve algoritmalar, nesne yönelimli programlama, veritabanı sistemleri, işletim sistemleri, bilgisayar mimarisi ve yazılım mühendisliği gibi temel alanların yanı sıra; yapay zekâ, dijital görüntü işleme, kriptografi, bulut bilişim, Nesnelerin İnterneti (IoT) ve kuantum bilişim gibi alanlarda uzmanlaşma. Bitirme projesi ve teknik iletişim deneyimi.': 'Alongside core areas such as programming, data structures and algorithms, object-oriented programming, database systems, operating systems, computer architecture, and software engineering, I have specialized in artificial intelligence, digital image processing, cryptography, cloud computing, the Internet of Things (IoT), and quantum computing. Capstone project and technical communication experience.',
+    'Türkçe': 'Turkish',
+    'Anadil': 'Native',
+    'İngilizce — Okuma/Dinleme': 'English - Reading/Listening',
+    'İngilizce — Konuşma': 'English - Speaking',
+    'İngilizce — Yazma': 'English - Writing',
+    'İş Deneyimi': 'Work Experience',
+    'Stajyer — Web Geliştirme / AI Entegrasyonu': 'Intern - Web Development / AI Integration',
+    'Arca Yazılım Bilişim Danışmanlık, Ankara': 'Arca Software IT Consultancy, Ankara',
+    'Yerel çalışan bir haber toplama (aggregation) web uygulaması geliştirdim.': 'Developed a locally running news aggregation web application.',
+    'Anahtar kelime ve zaman filtresine dayalı haber arama özelliği kurdum.': 'Built news search based on keyword and time filters.',
+    'Hugging Face API kullanarak yapay zekâ destekli haber özetleme özelliği entegre ettim.': 'Integrated AI-powered news summarization using the Hugging Face API.',
+    'Kategori bazlı haber gezinme sistemi ve arama geçmişi takibi tasarladım.': 'Designed category-based news browsing and search history tracking.',
+    'Stajyer — Yazılım Geliştirme (Python)': 'Intern - Software Development (Python)',
+    'Bilgi Teknolojileri ve İletişim Kurumu (BTK), Ankara': 'Information and Communication Technologies Authority (BTK), Ankara',
+    'Python ile komut satırı tabanlı bir Yapılacaklar Listesi uygulaması geliştirdim.': 'Developed a command-line to-do list application with Python.',
+    'Görev oluşturma, güncelleme, silme ve listeleme fonksiyonlarını uyguladım.': 'Implemented task creation, updating, deletion, and listing functions.',
+    'Temiz, okunabilir ve sürdürülebilir kod yazımına odaklandım.': 'Focused on writing clean, readable, and maintainable code.',
+    'Stajyer — Ağ / IT': 'Intern - Network / IT',
+    'Enerji Piyasası Düzenleme Kurumu (EPDK), Ankara': 'Energy Market Regulatory Authority (EMRA), Ankara',
+    'Sanallaştırılmış ortamda sanal makineler tasarladım, kurdum ve yönettim.': 'Designed, deployed, and managed virtual machines in a virtualized environment.',
+    'Sunucu sistemleri kurup ağ operasyonlarını destekleyecek şekilde yapılandırdım.': 'Set up and configured server systems to support network operations.',
+    'Kullanıcı hesap yönetimi, parola politikaları ve güvenlik kısıtlamalarını tanımladım.': 'Defined user account management, password policies, and security restrictions.',
+    'Projeler & Yetenekler': 'Projects & Skills',
+    'MediaPipe ve OpenCV ile gerçek zamanlı poz tahmini, tekrar sayımı ve egzersiz form analizi yapan yapay zekâ destekli fitness koçluğu uygulaması. FastAPI ile REST API\'ler kuruldu, kullanıcı verileri SQLite ile yönetildi; Tkinter tabanlı masaüstü arayüzüne AI destekli öneriler ve kalori tahmini entegre edildi.': 'An AI-powered fitness coaching application with real-time pose estimation, rep counting, and exercise form analysis using MediaPipe and OpenCV. REST APIs were built with FastAPI, user data was managed with SQLite, and AI recommendations and calorie estimation were integrated into a Tkinter desktop interface.',
+    'Gerçek zamanlı akıcı mekanikli interaktif analog saatler ve birden çok global zaman dilimi sunan, vintage tarzda, responsive bir dünya saati uygulaması. Fuse.js ile yazım hatalarına toleranslı bulanık arama motoru geliştirildi; kullanıcı tercihleri localStorage ile kalıcı hale getirildi ve Vercel üzerinden yayınlandı.': 'A vintage-style, responsive world clock application featuring interactive analog clocks with smooth real-time mechanics and multiple global time zones. A typo-tolerant fuzzy search engine was built with Fuse.js; user preferences were persisted with localStorage and the app was deployed on Vercel.',
+    'Birden fazla kaynaktan haber çeken, kategorize eden ve gösteren bir haber toplama platformu. Hugging Face API ile yapay zekâ destekli haber özetleme entegre edildi; FastAPI ve SQLite tabanlı backend\'de anahtar kelime/tarih araması ve arama geçmişi özellikleri geliştirildi.': 'A news aggregation platform that fetches, categorizes, and displays news from multiple sources. AI-powered news summarization was integrated with the Hugging Face API; keyword/date search and search history were developed in a FastAPI and SQLite backend.',
+    'Yetenekler': 'Skills',
+    'Programlama Dilleri': 'Programming Languages',
+    'Backend Geliştirme': 'Backend Development',
+    'API Entegrasyonu': 'API Integration',
+    'Bulut & Altyapı': 'Cloud & Infrastructure',
+    'Sanal Makineler': 'Virtual Machines',
+    'Ağ & Sistem Yönetimi': 'Network & Systems Administration',
+    'Sunucu Kurulumu & Yapılandırma': 'Server Setup & Configuration',
+    'Sunucu Yönetimi': 'Server Administration',
+    'Kullanıcı & Erişim Yönetimi': 'User & Access Management',
+    'Ağ Yapılandırması': 'Network Configuration',
+    'Yapay Zekâ & Veri İşleme': 'AI & Data Processing',
+    'Metin Özetleme': 'Text Summarization',
+    'Veri Filtreleme & İşleme': 'Data Filtering & Processing',
+    'Araçlar': 'Tools',
+    'Komut Satırı (CLI)': 'Command Line (CLI)',
+    'Birlikte çalışalım.': 'Let\'s work together.',
+    'Yeni fırsatlara ve iş birliklerine açığım. Aşağıdaki kanallardan bana ulaşabilirsin.': 'I am open to new opportunities and collaborations. You can reach me through the channels below.',
+    'E-posta': 'Email',
+    'Telefon': 'Phone'
+  };
+
+  const originalText = new WeakMap();
+
+  function setLanguage(language){
+    document.querySelectorAll('body *').forEach(element => {
+      element.childNodes.forEach(node => {
+        if(node.nodeType !== Node.TEXT_NODE) return;
+        const source = node.nodeValue.replace(/\s+/g, ' ').trim();
+        if(!source) return;
+        if(!originalText.has(node)) originalText.set(node, source);
+        const original = originalText.get(node);
+        const translated = language === 'en' && translations[original] ? translations[original] : original;
+        node.nodeValue = node.nodeValue.replace(node.nodeValue.trim(), translated);
+      });
+    });
+    document.documentElement.lang = language;
+    document.title = language === 'en' ? 'Emre Güzel - Computer Engineer' : 'Emre Güzel - Bilgisayar Mühendisi';
+    document.querySelectorAll('[data-language]').forEach(button => button.classList.toggle('active', button.dataset.language === language));
+    localStorage.setItem('portfolio-language', language);
+  }
+
+  document.querySelectorAll('[data-language]').forEach(button => {
+    button.addEventListener('click', () => setLanguage(button.dataset.language));
+  });
+
   function goTo(page){
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + page).classList.add('active');
@@ -625,6 +747,9 @@
   document.querySelectorAll('.mobile-nav button').forEach(btn => {
     btn.addEventListener('click', () => goTo(btn.dataset.page));
   });
+
+  const savedLanguage = localStorage.getItem('portfolio-language') || 'tr';
+  if(savedLanguage === 'en') setLanguage('en');
 </script>
 
 </body>
