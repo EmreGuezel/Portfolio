@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emre Güzel — Bilgisayar Mühendisi</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --paper:#F7F7F4;
+    --paper-raised:#FFFFFF;
+    --ink:#1C1D1F;
+    --graphite:#5B5D62;
+    --line:#E1E0DA;
+    --accent:#2B5D5A;
+    --accent-soft:#E6EFEE;
+    --mono:'IBM Plex Mono', monospace;
+    --serif:'Fraunces', serif;
+    --sans:'Inter', sans-serif;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--sans);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit; text-decoration:none;}
+  ::selection{background:var(--accent); color:#fff;}
+
+  .layout{
+    display:flex;
+    min-height:100vh;
+  }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    width:240px;
+    flex-shrink:0;
+    border-right:1px solid var(--line);
+    padding:40px 28px;
+    display:flex;
+    flex-direction:column;
+    position:sticky;
+    top:0;
+    height:100vh;
+  }
+
+  .monogram{
+    width:44px; height:44px;
+    border:1px solid var(--ink);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--serif);
+    font-size:16px;
+    font-weight:500;
+    margin-bottom:28px;
+    overflow:hidden;
+  }
+  .monogram img{
+    width:100%; height:100%;
+    object-fit:cover;
+  }
+
+  .side-name{
+    font-family:var(--serif);
+    font-size:20px;
+    font-weight:500;
+    margin-bottom:2px;
+  }
+  .side-title{
+    font-size:12px;
+    color:var(--graphite);
+    margin-bottom:36px;
+  }
+
+  nav.rail{
+    position:relative;
+    padding-left:20px;
+    flex:1;
+  }
+  nav.rail::before{
+    content:'';
+    position:absolute;
+    left:5px; top:6px; bottom:6px;
+    width:1px;
+    background:var(--line);
+  }
+  .rail-item{
+    position:relative;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding:9px 0;
+    cursor:pointer;
+    font-size:14px;
+    color:var(--graphite);
+    transition:color .15s ease;
+  }
+  .rail-item::before{
+    content:'';
+    position:absolute;
+    left:-19px; top:50%;
+    transform:translateY(-50%);
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--paper);
+    border:1px solid var(--line);
+    transition:.15s ease;
+  }
+  .rail-item .idx{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--graphite);
+    opacity:.7;
+  }
+  .rail-item:hover{ color:var(--ink); }
+  .rail-item.active{ color:var(--ink); font-weight:500; }
+  .rail-item.active::before{
+    background:var(--accent);
+    border-color:var(--accent);
+  }
+
+  .side-footer{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--graphite);
+    padding-top:20px;
+  }
+
+  /* ---------- MAIN ---------- */
+  main{
+    flex:1;
+    max-width:760px;
+    padding:64px 56px 120px;
+  }
+  .page{ display:none; }
+  .page.active{ display:block; animation:rise .4s ease; }
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:14px;
+    display:block;
+  }
+
+  h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:44px;
+    line-height:1.12;
+    letter-spacing:-.01em;
+    margin-bottom:18px;
+  }
+  h2{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:28px;
+    margin-bottom:24px;
+  }
+  h3{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:19px;
+    margin-bottom:4px;
+  }
+
+  p{ color:var(--graphite); font-size:15.5px; max-width:58ch; }
+  .lead{ font-size:17px; color:var(--ink); margin-bottom:32px; max-width:56ch;}
+
+  .btn-row{ display:flex; gap:12px; margin-top:36px; flex-wrap:wrap; }
+  .btn{
+    font-size:13.5px;
+    font-weight:500;
+    padding:11px 20px;
+    border-radius:2px;
+    border:1px solid var(--ink);
+    transition:.15s ease;
+    cursor:pointer;
+    background:none;
+    font-family:var(--sans);
+  }
+  .btn.primary{ background:var(--ink); color:#fff; }
+  .btn.primary:hover{ background:var(--accent); border-color:var(--accent); }
+  .btn.ghost:hover{ background:var(--ink); color:#fff; }
+
+  .divider{ height:1px; background:var(--line); margin:44px 0; }
+
+  .fact-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px 32px;
+    margin-top:8px;
+  }
+  .fact dt{
+    font-family:var(--mono);
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--graphite);
+    margin-bottom:4px;
+  }
+  .fact dd{ font-size:14.5px; }
+
+  /* Experience */
+  .exp-item{ position:relative; padding-left:28px; margin-bottom:36px; }
+  .exp-item::before{
+    content:'';
+    position:absolute; left:0; top:6px;
+    width:8px; height:8px;
+    border-radius:50%;
+    border:1px solid var(--accent);
+  }
+  .exp-item::after{
+    content:'';
+    position:absolute; left:3.5px; top:16px; bottom:-36px;
+    width:1px;
+    background:var(--line);
+  }
+  .exp-item:last-child::after{ display:none; }
+  .exp-meta{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--accent);
+    margin-bottom:6px;
+  }
+  .exp-company{ font-size:13px; color:var(--graphite); margin-bottom:10px; }
+  .exp-item ul{ margin-top:10px; padding-left:18px; }
+  .exp-item li{ font-size:14.5px; color:var(--graphite); margin-bottom:5px; }
+
+  /* Projects */
+  .card-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:18px;
+    margin-bottom:44px;
+  }
+  .card{
+    border:1px solid var(--line);
+    background:var(--paper-raised);
+    padding:22px;
+    border-radius:2px;
+  }
+  .card p{ font-size:14px; margin-top:8px; }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
+  .tag{
+    font-family:var(--mono);
+    font-size:10.5px;
+    padding:4px 8px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    border-radius:2px;
+  }
+
+  .skill-group{ margin-bottom:22px; }
+  .skill-group h4{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--graphite);
+    margin-bottom:10px;
+    font-weight:500;
+  }
+
+  /* Contact */
+  .contact-list{ margin-top:20px; }
+  .contact-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+    font-size:14.5px;
+  }
+  .contact-row:first-child{ border-top:1px solid var(--line); }
+  .contact-row span:first-child{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    color:var(--graphite);
+  }
+  .contact-row a{ font-weight:500; }
+  .contact-row a:hover{ color:var(--accent); }
+
+  /* mobile top nav */
+  .mobile-nav{ display:none; }
+
+  @media (max-width: 860px){
+    .layout{ flex-direction:column; }
+    .sidebar{
+      width:100%; height:auto; position:sticky; top:0; z-index:10;
+      flex-direction:row; align-items:center; justify-content:space-between;
+      padding:18px 20px; background:var(--paper);
+    }
+    .sidebar nav.rail, .side-footer{ display:none; }
+    .monogram{ margin-bottom:0; }
+    .side-name, .side-title{ display:none; }
+    .mobile-nav{
+      display:flex; gap:4px; overflow-x:auto;
+    }
+    .mobile-nav button{
+      font-family:var(--mono); font-size:11px; white-space:nowrap;
+      padding:8px 12px; border:1px solid var(--line); background:none;
+      border-radius:2px; color:var(--graphite);
+    }
+    .mobile-nav button.active{ border-color:var(--ink); color:var(--ink); }
+    main{ padding:40px 24px 90px; }
+    h1{ font-size:32px; }
+    .fact-grid, .card-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="monogram"><img src="resim.jpg" alt="Emre Güzel"></div>
+    <div class="side-name">Emre Güzel</div>
+    <div class="side-title">Bilgisayar Mühendisi</div>
+
+    <nav class="rail" id="rail">
+      <div class="rail-item active" data-page="home"><span class="idx">01</span>Ana Sayfa</div>
+      <div class="rail-item" data-page="about"><span class="idx">02</span>Hakkımda</div>
+      <div class="rail-item" data-page="experience"><span class="idx">03</span>Deneyim</div>
+      <div class="rail-item" data-page="projects"><span class="idx">04</span>Projeler &amp; Yetenekler</div>
+      <div class="rail-item" data-page="contact"><span class="idx">05</span>İletişim</div>
+    </nav>
+
+    <div class="side-footer">Ankara, Türkiye</div>
+
+    <div class="mobile-nav" id="mobileNav">
+      <button class="active" data-page="home">Ana Sayfa</button>
+      <button data-page="about">Hakkımda</button>
+      <button data-page="experience">Deneyim</button>
+      <button data-page="projects">Projeler</button>
+      <button data-page="contact">İletişim</button>
+    </div>
+  </aside>
+
+  <main>
+
+    <!-- HOME -->
+    <section class="page active" id="page-home">
+      <span class="eyebrow">Portfolyo</span>
+      <h1>Merhaba, ben Emre.<br></h1>
+      <p class="lead">Ağ altyapısından yapay zekâ destekli
+      uygulamalara kadar geniş bir yelpazede pratik deneyim edindim; temiz kod ve okunabilir sistemler kurmaya
+      önem veriyorum.</p>
+
+      <div class="fact-grid">
+        <div class="fact"><dt>Konum</dt><dd>Ankara, Türkiye</dd></div>
+        <div class="fact"><dt>Odak</dt><dd>Yazılım Geliştirme &amp; Yapay Zekâ</dd></div>
+        <div class="fact"><dt>Eğitim</dt><dd>Bilgisayar Mühendisliği, THK Üniversitesi</dd></div>
+        <div class="fact"><dt>Diller</dt><dd>Türkçe (Anadil), İngilizce (B2)</dd></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn primary" onclick="goTo('projects')">Projelerimi Gör</button>
+        <button class="btn ghost" onclick="goTo('contact')">İletişime Geç</button>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="page" id="page-about">
+      <span class="eyebrow">Hakkımda</span>
+      <h2>Analitik düşünen, pratik üreten bir mühendis adayı.</h2>
+      <p style="margin-bottom:28px;">Türk Hava Kurumu Üniversitesi Bilgisayar Mühendisliği bölümünde eğitimimi
+      sürdürüyorum. Problemlere analitik yaklaşmayı ve yeni kavramları hızla kavrayıp uygulamaya dökmeyi seviyorum.
+      Takım çalışmasına yatkın, uyum sağlayan ve sonuç odaklı bir çalışma tarzım var; edindiğim teknik bilgiyi
+      gerçek dünya problemlerinde kullanmaya motiveyim.</p>
+
+      <div class="divider"></div>
+
+      <h3>Eğitim</h3>
+      <div class="exp-meta" style="margin-top:10px;">09/2021 — 07/2026</div>
+      <p style="margin-top:6px; font-weight:500; color:var(--ink);">Bilgisayar Mühendisliği Lisans Programı</p>
+      <div class="exp-company">Türk Hava Kurumu Üniversitesi — Ankara, Türkiye</div>
+      <p>Programlama, veri yapıları ve algoritmalar, nesne yönelimli programlama, veritabanı sistemleri, işletim
+      sistemleri, bilgisayar mimarisi ve yazılım mühendisliği gibi temel alanların yanı sıra; yapay zekâ, dijital
+      görüntü işleme, kriptografi, bulut bilişim, Nesnelerin İnterneti (IoT) ve kuantum bilişim gibi alanlarda
+      uzmanlaşma. Bitirme projesi ve teknik iletişim deneyimi.</p>
+
+      <div class="divider"></div>
+
+      <h3>Diller</h3>
+      <div class="fact-grid" style="margin-top:14px;">
+        <div class="fact"><dt>Türkçe</dt><dd>Anadil</dd></div>
+        <div class="fact"><dt>İngilizce — Okuma/Dinleme</dt><dd>B2</dd></div>
+        <div class="fact"><dt>İngilizce — Konuşma</dt><dd>B2</dd></div>
+        <div class="fact"><dt>İngilizce — Yazma</dt><dd>B1</dd></div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="page" id="page-experience">
+      <span class="eyebrow">Deneyim</span>
+      <h2>İş Deneyimi</h2>
+
+      <div class="exp-item">
+        <div class="exp-meta">06/2025 — 08/2025</div>
+        <h3>Stajyer — Web Geliştirme / AI Entegrasyonu</h3>
+        <div class="exp-company">Arca Yazılım Bilişim Danışmanlık, Ankara</div>
+        <ul>
+          <li>Yerel çalışan bir haber toplama (aggregation) web uygulaması geliştirdim.</li>
+          <li>Anahtar kelime ve zaman filtresine dayalı haber arama özelliği kurdum.</li>
+          <li>Hugging Face API kullanarak yapay zekâ destekli haber özetleme özelliği entegre ettim.</li>
+          <li>Kategori bazlı haber gezinme sistemi ve arama geçmişi takibi tasarladım.</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">08/2024 — 09/2024</div>
+        <h3>Stajyer — Yazılım Geliştirme (Python)</h3>
+        <div class="exp-company">Bilgi Teknolojileri ve İletişim Kurumu (BTK), Ankara</div>
+        <ul>
+          <li>Python ile komut satırı tabanlı bir Yapılacaklar Listesi uygulaması geliştirdim.</li>
+          <li>Görev oluşturma, güncelleme, silme ve listeleme fonksiyonlarını uyguladım.</li>
+          <li>Temiz, okunabilir ve sürdürülebilir kod yazımına odaklandım.</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">07/2024 — 08/2024</div>
+        <h3>Stajyer — Ağ / IT</h3>
+        <div class="exp-company">Enerji Piyasası Düzenleme Kurumu (EPDK), Ankara</div>
+        <ul>
+          <li>Sanallaştırılmış ortamda sanal makineler tasarladım, kurdum ve yönettim.</li>
+          <li>Sunucu sistemleri kurup ağ operasyonlarını destekleyecek şekilde yapılandırdım.</li>
+          <li>Kullanıcı hesap yönetimi, parola politikaları ve güvenlik kısıtlamalarını tanımladım.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PROJECTS & SKILLS -->
+    <section class="page" id="page-projects">
+      <span class="eyebrow">Projeler &amp; Yetenekler</span>
+      <h2>Projeler</h2>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3 style="font-size:16px;">AI Lifestyle Coach Agent</h3>
+          <p>MediaPipe ve OpenCV ile gerçek zamanlı poz tahmini, tekrar sayımı ve egzersiz form analizi yapan
+          yapay zekâ destekli fitness koçluğu uygulaması. FastAPI ile REST API'ler kuruldu, kullanıcı verileri
+          SQLite ile yönetildi; Tkinter tabanlı masaüstü arayüzüne AI destekli öneriler ve kalori tahmini entegre edildi.</p>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">OpenCV</span>
+            <span class="tag">MediaPipe</span>
+            <span class="tag">SQLite</span>
+            <span class="tag">Tkinter</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="font-size:16px;">World Time Dashboard</h3>
+          <p>Gerçek zamanlı akıcı mekanikli interaktif analog saatler ve birden çok global zaman dilimi sunan,
+          vintage tarzda, responsive bir dünya saati uygulaması. Fuse.js ile yazım hatalarına toleranslı bulanık arama
+          motoru geliştirildi; kullanıcı tercihleri localStorage ile kalıcı hale getirildi ve Vercel üzerinden yayınlandı.</p>
+          <div class="tag-row">
+            <span class="tag">Next.js</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Tailwind CSS</span>
+            <span class="tag">Fuse.js</span>
+            <span class="tag">Vercel</span>
+          </div>
+          <div class="tag-row" style="margin-top:10px;">
+            <a href="https://worldtime-gamma.vercel.app/" target="_blank" style="font-size:12.5px; font-weight:500; color:var(--accent);">worldtime-gamma.vercel.app ↗</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="font-size:16px;">AI News Aggregation System</h3>
+          <p>Birden fazla kaynaktan haber çeken, kategorize eden ve gösteren bir haber toplama platformu.
+          Hugging Face API ile yapay zekâ destekli haber özetleme entegre edildi; FastAPI ve SQLite tabanlı
+          backend'de anahtar kelime/tarih araması ve arama geçmişi özellikleri geliştirildi.</p>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">Hugging Face API</span>
+            <span class="tag">SQLite</span>
+            <span class="tag">JavaScript</span>
+          </div>
+        </div>
+      </div>
+
+      <h2>Yetenekler</h2>
+
+      <div class="skill-group">
+        <h4>Programlama Dilleri</h4>
+        <div class="tag-row">
+          <span class="tag">Python</span>
+          <span class="tag">Java</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h4>Backend Geliştirme</h4>
+        <div class="tag-row">
+          <span class="tag">FastAPI</span>
+          <span class="tag">REST API</span>
+          <span class="tag">API Entegrasyonu</span>
+          <span class="tag">SQLite</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h4>Bulut &amp; Altyapı</h4>
+        <div class="tag-row">
+          <span class="tag">AWS EC2</span>
+          <span class="tag">AWS S3</span>
+          <span class="tag">AWS IAM</span>
+          <span class="tag">AWS VPC</span>
+          <span class="tag">Route 53</span>
+          <span class="tag">CloudWatch</span>
+          <span class="tag">Auto Scaling</span>
+          <span class="tag">ELB</span>
+          <span class="tag">Sanal Makineler</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h4>Ağ &amp; Sistem Yönetimi</h4>
+        <div class="tag-row">
+          <span class="tag">TCP/IP</span>
+          <span class="tag">Sunucu Kurulumu &amp; Yapılandırma</span>
+          <span class="tag">Sunucu Yönetimi</span>
+          <span class="tag">Kullanıcı &amp; Erişim Yönetimi</span>
+          <span class="tag">Ağ Yapılandırması</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h4>Yapay Zekâ &amp; Veri İşleme</h4>
+        <div class="tag-row">
+          <span class="tag">Hugging Face API</span>
+          <span class="tag">Metin Özetleme</span>
+          <span class="tag">Veri Filtreleme &amp; İşleme</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h4>Frontend</h4>
+        <div class="tag-row">
+          <span class="tag">Next.js</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">Tailwind CSS</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h4>Araçlar</h4>
+        <div class="tag-row">
+          <span class="tag">Git</span>
+          <span class="tag">Komut Satırı (CLI)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="page" id="page-contact">
+      <span class="eyebrow">İletişim</span>
+      <h2>Birlikte çalışalım.</h2>
+      <p style="margin-bottom:8px;">Yeni fırsatlara ve iş birliklerine açığım. Aşağıdaki kanallardan
+      bana ulaşabilirsin.</p>
+
+      <div class="contact-list">
+        <div class="contact-row">
+          <span>E-posta</span>
+          <a href="mailto:emreguzel2002@gmail.com">emreguzel2002@gmail.com</a>
+        </div>
+        <div class="contact-row">
+          <span>Telefon</span>
+          <a href="tel:+905054934814">+90 505 493 48 14</a>
+        </div>
+        <div class="contact-row">
+          <span>WhatsApp</span>
+          <a href="https://wa.me/905054934814" target="_blank">+90 505 493 48 14</a>
+        </div>
+        <div class="contact-row">
+          <span>LinkedIn</span>
+          <a href="https://www.linkedin.com/in/emre-guezel/" target="_blank">https://www.linkedin.com/in/emre-guezel/</a>
+        </div>
+        <div class="contact-row">
+          <span>GitHub</span>
+          <a href="https://github.com/EmreGuezel" target="_blank">github.com/EmreGuezel</a>
+        </div>
+        <div class="contact-row">
+          <span>Konum</span>
+          <span>Ankara, Türkiye</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  function goTo(page){
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+
+    document.querySelectorAll('.rail-item').forEach(i => i.classList.toggle('active', i.dataset.page === page));
+    document.querySelectorAll('.mobile-nav button').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+
+    document.querySelector('main').scrollTo(0,0);
+    window.scrollTo(0,0);
+  }
+
+  document.querySelectorAll('.rail-item').forEach(item => {
+    item.addEventListener('click', () => goTo(item.dataset.page));
+  });
+  document.querySelectorAll('.mobile-nav button').forEach(btn => {
+    btn.addEventListener('click', () => goTo(btn.dataset.page));
+  });
+</script>
+
+</body>
+</html>
