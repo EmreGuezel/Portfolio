@@ -207,6 +207,7 @@
 
   .btn-row{ display:flex; gap:12px; margin-top:36px; flex-wrap:wrap; }
   .btn{
+    display:inline-block;
     font-size:13.5px;
     font-weight:500;
     padding:11px 20px;
@@ -443,6 +444,7 @@
       <div class="btn-row">
         <button class="btn primary" onclick="goTo('projects')">Projelerimi Gör</button>
         <button class="btn ghost" onclick="goTo('contact')">İletişime Geç</button>
+        <a class="btn ghost" href="Emre_Guzel_CV.pdf" download>CV İndir</a>
       </div>
     </section>
 
@@ -450,10 +452,10 @@
     <section class="page" id="page-about">
       <span class="eyebrow">Hakkımda</span>
       <h2>Analitik düşünen, pratik üreten bir mühendis adayı.</h2>
-      <p style="margin-bottom:28px;">Türk Hava Kurumu Üniversitesi Bilgisayar Mühendisliği bölümünde eğitimimi
-      sürdürüyorum. Problemlere analitik yaklaşmayı ve yeni kavramları hızla kavrayıp uygulamaya dökmeyi seviyorum.
-      Takım çalışmasına yatkın, uyum sağlayan ve sonuç odaklı bir çalışma tarzım var; edindiğim teknik bilgiyi
-      gerçek dünya problemlerinde kullanmaya motiveyim.</p>
+      <p style="margin-bottom:28px;">Analitik düşünme ve problemleri verimli bir şekilde çözme konusunda güçlü bir
+      yeteneğe sahip, yeni mezun bir Bilgisayar Mühendisiyim. Yeni kavramları hızla kavrayıp pratiğe dökmede hızlıyım;
+      takım çalışmasına yatkın ve uyum sağlayan bir çalışma tarzım var. Edindiğim teknik bilgiyi profesyonel bir
+      ortamda, sonuç odaklı bir yaklaşımla uygulamaya koymaya motiveyim.</p>
 
       <div class="divider"></div>
 
@@ -676,6 +678,10 @@
           <span>Konum</span>
           <span>Ankara, Türkiye</span>
         </div>
+        <div class="contact-row">
+          <span>CV</span>
+          <a href="Emre_Guzel_CV.pdf" download>CV İndir <span aria-hidden="true">↓</span></a>
+        </div>
       </div>
     </section>
 
@@ -704,7 +710,7 @@
     'Projelerimi Gör': 'View My Projects',
     'İletişime Geç': 'Get in Touch',
     'Analitik düşünen, pratik üreten bir mühendis adayı.': 'An analytical engineering student who turns ideas into practical solutions.',
-    'Türk Hava Kurumu Üniversitesi Bilgisayar Mühendisliği bölümünde eğitimimi sürdürüyorum. Problemlere analitik yaklaşmayı ve yeni kavramları hızla kavrayıp uygulamaya dökmeyi seviyorum. Takım çalışmasına yatkın, uyum sağlayan ve sonuç odaklı bir çalışma tarzım var; edindiğim teknik bilgiyi gerçek dünya problemlerinde kullanmaya motiveyim.': 'I am studying Computer Engineering at Turkish Aeronautical Association University. I enjoy approaching problems analytically, quickly understanding new concepts, and turning them into working solutions. I am collaborative, adaptable, and results-oriented, and I am motivated to apply my technical knowledge to real-world problems.',
+    'Analitik düşünme ve problemleri verimli bir şekilde çözme konusunda güçlü bir yeteneğe sahip, yeni mezun bir Bilgisayar Mühendisiyim. Yeni kavramları hızla kavrayıp pratiğe dökmede hızlıyım; takım çalışmasına yatkın ve uyum sağlayan bir çalışma tarzım var. Edindiğim teknik bilgiyi profesyonel bir ortamda, sonuç odaklı bir yaklaşımla uygulamaya koymaya motiveyim.': 'Recent Computer Engineering graduate with a strong ability to think analytically and solve problems efficiently. Quick to grasp new concepts and apply them in practice, with a collaborative and adaptable approach to teamwork. Motivated to apply technical knowledge and a results-driven approach in a professional environment.',
     'Bilgisayar Mühendisliği Lisans Programı': 'Bachelor\'s Degree in Computer Engineering',
     'Türk Hava Kurumu Üniversitesi — Ankara, Türkiye': 'Turkish Aeronautical Association University - Ankara, Türkiye',
     'Programlama, veri yapıları ve algoritmalar, nesne yönelimli programlama, veritabanı sistemleri, işletim sistemleri, bilgisayar mimarisi ve yazılım mühendisliği gibi temel alanların yanı sıra; yapay zekâ, dijital görüntü işleme, kriptografi, bulut bilişim, Nesnelerin İnterneti (IoT) ve kuantum bilişim gibi alanlarda uzmanlaşma. Bitirme projesi ve teknik iletişim deneyimi.': 'Alongside core areas such as programming, data structures and algorithms, object-oriented programming, database systems, operating systems, computer architecture, and software engineering, I have specialized in artificial intelligence, digital image processing, cryptography, cloud computing, the Internet of Things (IoT), and quantum computing. Capstone project and technical communication experience.',
@@ -753,7 +759,9 @@
     'Birlikte çalışalım.': 'Let\'s work together.',
     'Yeni fırsatlara ve iş birliklerine açığım. Aşağıdaki kanallardan bana ulaşabilirsin.': 'I am open to new opportunities and collaborations. You can reach me through the channels below.',
     'E-posta': 'Email',
-    'Telefon': 'Phone'
+    'Telefon': 'Phone',
+    'CV İndir': 'Download CV',
+    'CV': 'CV'
   };
 
   const originalText = new WeakMap();
