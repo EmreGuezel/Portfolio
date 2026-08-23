@@ -159,12 +159,17 @@
     max-width:760px;
     padding:64px 56px 120px;
   }
-  .page{ display:none; }
-  .page.active{ display:block; animation:rise .4s ease; }
-  @keyframes rise{
-    from{ opacity:0; transform:translateY(8px); }
-    to{ opacity:1; transform:translateY(0); }
+  .page{
+    display:block;
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .7s cubic-bezier(.2,.7,.3,1), transform .7s cubic-bezier(.2,.7,.3,1);
+    padding-bottom:90px;
+    margin-bottom:20px;
+    border-bottom:1px solid var(--line);
   }
+  .page:last-child{ border-bottom:none; padding-bottom:0; margin-bottom:0; }
+  .page.in-view{ opacity:1; transform:translateY(0); }
 
   .eyebrow{
     font-family:var(--mono);
@@ -367,6 +372,7 @@
     }
     .mobile-nav button.active{ border-color:var(--ink); color:var(--ink); background:var(--accent-soft); }
     main{ padding:32px 20px 80px; max-width:100%; }
+    .page{ scroll-margin-top:96px; }
     h1{ font-size:30px; }
     h2{ font-size:23px; }
     .lead{ font-size:16px; }
@@ -775,14 +781,8 @@
   });
 
   function goTo(page){
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + page).classList.add('active');
-
-    document.querySelectorAll('.rail-item').forEach(i => i.classList.toggle('active', i.dataset.page === page));
-    document.querySelectorAll('.mobile-nav button').forEach(b => b.classList.toggle('active', b.dataset.page === page));
-
-    document.querySelector('main').scrollTo(0,0);
-    window.scrollTo(0,0);
+    const target = document.getElementById('page-' + page);
+    if(target) target.scrollIntoView({ behavior:'smooth', block:'start' });
   }
 
   document.querySelectorAll('.rail-item').forEach(item => {
@@ -791,6 +791,29 @@
   document.querySelectorAll('.mobile-nav button').forEach(btn => {
     btn.addEventListener('click', () => goTo(btn.dataset.page));
   });
+
+  // Reveal each page section with a fade/rise as it scrolls into view
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.page').forEach(p => revealObserver.observe(p));
+
+  // Highlight the nav item matching whichever section is centered in view
+  const spyObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const page = entry.target.id.replace('page-', '');
+        document.querySelectorAll('.rail-item').forEach(i => i.classList.toggle('active', i.dataset.page === page));
+        document.querySelectorAll('.mobile-nav button').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+      }
+    });
+  }, { threshold: 0.5, rootMargin: '-35% 0px -35% 0px' });
+  document.querySelectorAll('.page').forEach(p => spyObserver.observe(p));
 
   const savedLanguage = localStorage.getItem('portfolio-language') || 'tr';
   if(savedLanguage === 'en') setLanguage('en');
