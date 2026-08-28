@@ -47,9 +47,12 @@
     padding:40px 28px;
     display:flex;
     flex-direction:column;
-    position:sticky;
+    position:fixed;
+    left:0;
     top:0;
     height:100vh;
+    z-index:10;
+    background:var(--paper);
   }
 
   .monogram{
@@ -157,6 +160,7 @@
   main{
     flex:1;
     max-width:760px;
+    margin-left:240px;
     padding:64px 56px 120px;
   }
   .page{
@@ -372,7 +376,7 @@
       border-radius:2px; color:var(--graphite);
     }
     .mobile-nav button.active{ border-color:var(--ink); color:var(--ink); background:var(--accent-soft); }
-    main{ padding:32px 20px 80px; max-width:100%; }
+    main{ margin-left:0; padding:32px 20px 80px; max-width:100%; }
     .page{ scroll-margin-top:96px; }
     h1{ font-size:30px; }
     h2{ font-size:23px; }
